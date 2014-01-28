@@ -1,32 +1,54 @@
-SET(PROJECT_NAME PCLSuite)
+SET(PROJECT_NAME PCLTools)
 PROJECT( ${PROJECT_NAME} )
 CMAKE_MINIMUM_REQUIRED(VERSION 2.6)
 
 #### !! HOST specific ####
-SET(PCL_DIR "/home/bontius/workspace/3rdparty/pcl-trunk/install/share/pcl-1.7")
+INCLUDE( "../local_dependencies.cmake" )
 
 #### DEPENDENCIES ####
+###### PCL ######
 FIND_PACKAGE( PCL REQUIRED )
 INCLUDE_DIRECTORIES( ${PCL_INCLUDE_DIRS} )
+###### VTK ######
+FIND_PACKAGE( VTK REQUIRED )
+INCLUDE_DIRECTORIES( ${VTK_INCLUDE_DIRS} )
 
 #### SOURCE ####
+SET( HPP_LIST
+    include/Primitives.hpp
+)
 SET( H_LIST
+    include/Primitives.h
 )
 
 SET( SRC_LIST
-    src/main.cpp
+    src/Primitives.cpp
 )
 
-#### EXECUTABLE
-#ADD_LIBRARY( ${PROJECT_NAME} SHARED ${SRC_LIST} ${H_LIST} )
-ADD_EXECUTABLE( ${PROJECT_NAME} ${SRC_LIST} ${H_LIST} )
+#### EXECUTABLE ####
+INCLUDE_DIRECTORIES( include )
+ADD_LIBRARY( ${PROJECT_NAME} SHARED ${SRC_LIST} ${H_LIST} ${HPP_LIST} )
 
-# LINKING
+#### LINKING ####
 TARGET_LINK_LIBRARIES( ${PROJECT_NAME}
     ${PCL_LIBRARIES}
-    vtkCommon
-    vtkFiltering
-    vtkRendering
+    ${VTK_LIBRARIES}
+)
+
+## TESTer executable ##
+SET( TESTER_TARGET_NAME test${PROJECT_NAME} )
+
+get_property( lib_location TARGET ${PROJECT_NAME} PROPERTY LOCATION )
+message (STATUS "lib_location == ${lib_location}")
+
+#### SOURCE ####
+SET( TEST_SRC_LIST
+    test/main.cpp
+)
+
+ADD_EXECUTABLE( ${TESTER_TARGET_NAME} ${TEST_SRC_LIST} )
+TARGET_LINK_LIBRARIES( ${TESTER_TARGET_NAME}
+    ${lib_location}
 )
 
 

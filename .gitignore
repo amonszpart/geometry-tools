@@ -11,3 +11,10 @@
 *.lai
 *.la
 *.a
+
+# local defines file
+local_dependencies.cmake
+*.user
+
+# build folders
+build
