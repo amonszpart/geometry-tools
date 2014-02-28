@@ -15,19 +15,21 @@ INCLUDE_DIRECTORIES( ${VTK_INCLUDE_DIRS} )
 
 #### SOURCE ####
 SET( HPP_LIST
-    include/Primitives.hpp
+    include/pcltools/primitives.hpp
+    include/pcltools/util.hpp
 )
 SET( H_LIST
-    include/Primitives.h
+    include/pcltools/primitives.h
 )
 
 SET( SRC_LIST
-    src/Primitives.cpp
+    src/pcltools/primitives.cpp
 )
 
 #### EXECUTABLE ####
 INCLUDE_DIRECTORIES( include )
 ADD_LIBRARY( ${PROJECT_NAME} SHARED ${SRC_LIST} ${H_LIST} ${HPP_LIST} )
+SET_TARGET_PROPERTIES( ${PROJECT_NAME} PROPERTIES DEBUG_POSTFIX "d")
 
 #### LINKING ####
 TARGET_LINK_LIBRARIES( ${PROJECT_NAME}

@@ -1,13 +1,13 @@
 #include <iostream>
 
-#include "Primitives.h"
+#include "pcltools/primitives.h"
 
 using namespace std;
 
 int main()
 {
-    smartgeom::Primitives::test( /* verbose: */ true,
-                                 /* display: */ true );
+    smartgeometry::Primitives::test( /* verbose: */ true,
+                                     /* display: */ true );
 
     return 0;
 }

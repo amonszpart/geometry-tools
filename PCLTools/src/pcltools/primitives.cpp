@@ -1,10 +1,10 @@
-#include "Primitives.h"
+#include "pcltools/primitives.h"
 
 #include <iostream>
 #include <pcl/io/pcd_io.h>
 #include <pcl/visualization/pcl_visualizer.h>
 
-namespace smartgeom
+namespace smartgeometry
 {
 
     // resize normals cloud to match cloud_ptr, copy estimated ones to right positions, leave others as 0

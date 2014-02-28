@@ -12,7 +12,7 @@
 #include <pcl/sample_consensus/method_types.h>
 #include <pcl/features/normal_3d.h>
 
-namespace smartgeom
+namespace smartgeometry
 {
     class Primitives
     {
@@ -29,9 +29,10 @@ namespace smartgeom
              * @param[in]  distanceThreshold   Threshold to calcaulate inliers
              * @param[in]  sacmodel            NORMAL_PLANE estimates a plane using normals. NORMAL_PARALLEL_PLANE estimates using normals, and tries to be parallel to "*p_normal"
              * @param[in]  p_normal            A vector to be parallel to, NULL if unused.
-             * @param[in]  normal_estimation_K Normals get estimated using this K-nearest neighbours, <20 makes sense.
+             * @param[in]  normal_estimation_K Normals get estimated using this K-nearest neighbours, < 20 makes sense.
              * @param[in]  sac_method          RANSAC, PROSAC, etc.
-             * @param[in]  seg_max_iterations  RANSAC iteration cap, 500 seems ok.
+             * @param[in]  seg_max_iterations  [RAN]SAC iteration cap, 500 seems ok.
+             * @return EXIT_SUCCESS if "out_coefficients" contain meaningful results
              */
             template <typename MyPointT> // TODO: remove cloud normal estimation to separate function
             static int
@@ -69,11 +70,11 @@ namespace smartgeom
             static int
             test( bool verbose = false, bool display = false );
     };
-}
+} // namespace smartgeom
 
 #ifndef INC_PRIMITIVES_HPP
 #   define INC_PRIMITIVES_HPP
-#   include "Primitives.hpp"
+#   include "pcltools/primitives.hpp"
 #endif // INC_PRIMITIVES_HPP
 
 #endif // PRIMITIVES_H

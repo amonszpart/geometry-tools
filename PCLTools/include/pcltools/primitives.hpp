@@ -1,13 +1,13 @@
-#ifndef PRIMITIVES_HPP
-#define PRIMITIVES_HPP
-#include "Primitives.h"
+#ifndef __SMARTGEOMETRY__PRIMITIVES_HPP__
+#define __SMARTGEOMETRY__PRIMITIVES_HPP__
+
+#include "pcltools/primitives.h"
 
 #include <pcl/point_types.h>
 #include <pcl/segmentation/sac_segmentation.h>
-#include <pcl/features/normal_3d.h>
 #include "pcl/common/angles.h"
 
-namespace smartgeom
+namespace smartgeometry
 {
     template <typename MyPointT>
     int
@@ -116,4 +116,4 @@ namespace smartgeom
 
 } // namespace smartgeom
 
-#endif // PRIMITIVES_HPP
+#endif // __SMARTGEOMETRY__PRIMITIVES_HPP__
