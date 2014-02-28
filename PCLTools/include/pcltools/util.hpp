@@ -148,9 +148,12 @@ namespace smartgeometry
             else                  found_points_count = tree->nearestKSearch( searchPoint,      K, neighbour_indices[pid], sqr_dists    );
 
             // output distances
-            if ( (found_points_count > 0) && p_distances )
+            if ( found_points_count > 0 )
             {
-                p_distances->at(pid) = sqr_dists;
+                if ( p_distances )
+                {
+                    p_distances->at(pid) = sqr_dists;
+                }
             }
             else
             {
