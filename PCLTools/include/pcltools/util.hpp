@@ -244,6 +244,23 @@ namespace smartgeometry
         return EXIT_SUCCESS;
     }
 
+    template <typename inCloudT> inline ::pcl::PointIndices::Ptr
+    allIndicesOf( inCloudT cloud_ptr )
+    {
+        ::pcl::PointIndices::Ptr indices_ptr( new ::pcl::PointIndices() );
+        indices_ptr->indices.reserve( cloud_ptr->size() );
+
+        for ( int i = 0; i != cloud_ptr->size(); ++i )
+            indices_ptr->indices.push_back( i );
+
+        return indices_ptr;
+    }
+
+    inline ::pcl::PointXYZ
+    toPointXYZ( Eigen::Vector3f const& vector3f )
+    {
+        return ::pcl::PointXYZ( vector3f.x(), vector3f.y(), vector3f.z() );
+    }
 } // ns smartgeometry
 
 #endif // __SMARTGEOMETRY_UTIL_HPP__
