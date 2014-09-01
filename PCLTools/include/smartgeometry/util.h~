@@ -1,7 +1,0 @@
-namespace smartgeometry
-{
-    namespace util
-    {
-        std::string timestamp2Str( std::string prefix = "");
-    } // ... ns util
-} // ... ns smartgeometry
