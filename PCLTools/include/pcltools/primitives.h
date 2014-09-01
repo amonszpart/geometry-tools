@@ -3,7 +3,7 @@
 
 #include <stdlib.h>
 
-#include <Eigen/Dense>
+#include <eigen3/Eigen/Dense>
 
 #include <pcl/ModelCoefficients.h>
 #include <pcl/PointIndices.h>

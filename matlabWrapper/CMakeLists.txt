@@ -14,7 +14,8 @@ SET( LIBRARY_OUTPUT_PATH    ${dir} CACHE PATH "Build directory" FORCE)
 SET( CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS} -g" )
 
 # defines
-add_definitions( -DMATLAB_APP_PATH="\\"${MATLAB_PATH}/bin/matlab\\"" )
+#add_definitions( -DMATLAB_APP_PATH="\\"${MATLAB_PATH}/bin/matlab\\"" )
+add_definitions( -DMATLAB_APP_PATH="\\"/home/bontius/matlab\\"" )
 
 # might not be needed...
 SET( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -static-libstdc++" )
