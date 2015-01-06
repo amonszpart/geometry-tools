@@ -9,18 +9,18 @@
 
 namespace smartgeometry
 {
-    template <typename MyPointT>
+    template <typename _MyPointT>
     int
     Primitives::extractPlane( pcl::ModelCoefficients::Ptr                           &out_coefficients
-                              , boost::shared_ptr<const pcl::PointCloud<MyPointT> >  in_cloud_ptr
-                              , pcl::PointIndices::Ptr                              *out_inlier_indices
-                              , pcl::PointIndices::ConstPtr                          in_indices_ptr
-                              , double                                               distanceThreshold
-                              , int                                                  sac_model
-                              , Eigen::Vector3f                                     *p_normal
-                              , int                                                  normal_estimation_K
-                              , int                                                  seg_sac_method
-                              , int                                                  seg_max_iterations  )
+                            , boost::shared_ptr<const pcl::PointCloud<_MyPointT> >  in_cloud_ptr
+                            , pcl::PointIndices::Ptr                              *out_inlier_indices
+                            , pcl::PointIndices::ConstPtr                          in_indices_ptr
+                            , double                                               distanceThreshold
+                            , int                                                  sac_model
+                            , Eigen::Vector3f                                     *p_normal
+                            , int                                                  normal_estimation_K
+                            , int                                                  seg_sac_method
+                            , int                                                  seg_max_iterations  )
     {
         // prepare output
         if ( !out_coefficients )
@@ -29,8 +29,8 @@ namespace smartgeometry
         // Normals
         pcl::PointCloud<pcl::Normal>::Ptr roi_cloud_normals_ptr (new pcl::PointCloud<pcl::Normal>);
         {
-            pcl::NormalEstimation<MyPointT, pcl::Normal> normal_estimation;
-            typename pcl::search::KdTree<MyPointT>::Ptr  tree( new pcl::search::KdTree<MyPointT> );
+            pcl::NormalEstimation<_MyPointT, pcl::Normal> normal_estimation;
+            typename pcl::search::KdTree<_MyPointT>::Ptr  tree( new pcl::search::KdTree<_MyPointT> );
 
             normal_estimation.setSearchMethod( tree                );
             normal_estimation.setInputCloud  ( in_cloud_ptr        );
@@ -57,7 +57,7 @@ namespace smartgeometry
 
         // Segmentation
         pcl::PointIndices::Ptr inliers_indices( new pcl::PointIndices() );
-        pcl::SACSegmentationFromNormals<MyPointT, pcl::Normal> seg;
+        pcl::SACSegmentationFromNormals<_MyPointT, pcl::Normal> seg;
         // in
         seg.setInputCloud           ( in_cloud_ptr       );
         seg.setInputNormals         ( cloud_normals_ptr  );
@@ -112,6 +112,46 @@ namespace smartgeometry
         // return status
         return (out_coefficients->values.size() > 0) ? EXIT_SUCCESS
                                                      : EXIT_FAILURE;
+    }
+
+    // resize normals cloud to match cloud_ptr, copy estimated ones to right positions, leave others as 0
+
+    inline int
+    Primitives::expandNormals( pcl::PointCloud<pcl::Normal>::Ptr      &cloud_normals_ptr,
+                               pcl::PointIndices::ConstPtr             in_indices_ptr,
+                               pcl::PointCloud<pcl::Normal>::ConstPtr  roi_cloud_normals_ptr,
+                               int                                     output_size           )
+    {
+        int return_value = EXIT_SUCCESS;
+
+        // allocate ptr
+        if ( !cloud_normals_ptr ) cloud_normals_ptr = pcl::PointCloud<pcl::Normal>::Ptr( new pcl::PointCloud<pcl::Normal>() );
+        // resize content
+        cloud_normals_ptr->resize( output_size );
+
+        // copy non-zeros
+        for ( size_t index_id = 0;
+                     index_id < in_indices_ptr->indices.size();
+                   ++index_id )
+        {
+            try
+            {
+                // copy the next normal to its place indexed by the values in "in_indices"
+                cloud_normals_ptr->at( in_indices_ptr->indices[index_id] ) = roi_cloud_normals_ptr->at( index_id );
+            }
+            catch ( std::exception ex)
+            {
+                //std::cout << "index_id: " << index_id << std::endl;
+                //std::cout << "in_indices_ptr->indices[index_id]: " << in_indices_ptr->indices[index_id] << std::endl;
+                //std::cout << "roi_cloud_normals_ptr->at( index_id ): "<< roi_cloud_normals_ptr->at( index_id ) << std::endl;
+
+                std::cerr << __func__ << ": probably indexing error..." << ex.what() << std::endl;
+
+                return_value = EXIT_FAILURE;
+            }
+        }
+
+        return return_value;
     }
 
 } // namespace smartgeom

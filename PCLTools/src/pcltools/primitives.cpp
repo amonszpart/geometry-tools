@@ -6,46 +6,6 @@
 
 namespace smartgeometry
 {
-
-    // resize normals cloud to match cloud_ptr, copy estimated ones to right positions, leave others as 0
-    int
-    Primitives::expandNormals( pcl::PointCloud<pcl::Normal>::Ptr      &cloud_normals_ptr,
-                               pcl::PointIndices::ConstPtr             in_indices_ptr,
-                               pcl::PointCloud<pcl::Normal>::ConstPtr  roi_cloud_normals_ptr,
-                               int                                     output_size           )
-    {
-        int return_value = EXIT_SUCCESS;
-
-        // allocate ptr
-        if ( !cloud_normals_ptr ) cloud_normals_ptr = pcl::PointCloud<pcl::Normal>::Ptr( new pcl::PointCloud<pcl::Normal>() );
-        // resize content
-        cloud_normals_ptr->resize( output_size );
-
-        // copy non-zeros
-        for ( int index_id = 0;
-                  index_id < in_indices_ptr->indices.size();
-                ++index_id )
-        {
-            try
-            {
-                // copy the next normal to its place indexed by the values in "in_indices"
-                cloud_normals_ptr->at( in_indices_ptr->indices[index_id] ) = roi_cloud_normals_ptr->at( index_id );
-            }
-            catch ( std::exception ex)
-            {
-                //std::cout << "index_id: " << index_id << std::endl;
-                //std::cout << "in_indices_ptr->indices[index_id]: " << in_indices_ptr->indices[index_id] << std::endl;
-                //std::cout << "roi_cloud_normals_ptr->at( index_id ): "<< roi_cloud_normals_ptr->at( index_id ) << std::endl;
-
-                std::cerr << __func__ << ": probably indexing error..." << ex.what() << std::endl;
-
-                return_value = EXIT_FAILURE;
-            }
-        }
-
-        return return_value;
-    }
-
     // TESTING //
     int
     Primitives::test( bool verbose, bool display )

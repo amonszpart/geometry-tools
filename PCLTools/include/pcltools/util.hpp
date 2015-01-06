@@ -6,14 +6,8 @@
 #include "pcl/point_cloud.h"
 #include "pcl/PointIndices.h"
 #include "pcl/features/normal_3d.h" // normalsegmentation
-#include <pcl/common/transforms.h> // transformpointcloud
+#include "pcl/common/transforms.h" // transformpointcloud
 #include "pcltools/primitives.h"
-
-
-#define DEBUG_FITLINE 0
-#if DEBUG_FITLINE
-    #include <pcl/visualization/pcl_visualizer.h>
-#endif
 
 #define SG_STATIC_ASSERT( condition, name )\
     typedef char assert_failed_ ## name [ (condition) ? 1 : -1 ];
@@ -480,21 +474,6 @@ namespace smartgeometry
                     {
                         // formula borrowed from PCL: (line_pt - point).cross3(line_dir).squaredNorm();
                         Eigen::Matrix<Scalar,3,1> pnt = cloud[ p_indices ? (*p_indices)[point_id] : point_id ].getVector3fMap();
-//                        weights[point_id] = (*pointPrimitiveDistanceFunc)( pnt, primitive );
-                        // TODO: template this
-//                        switch (rows)
-//                        {
-//                            case 6:
-//                                weights[point_id] = (primitive.template head<3>() - pnt).cross( primitive.template segment<3>(3) ).norm();
-//                                break;
-//                            case 4:
-//                                weights[point_id] = primitive.template head<3>().dot( pnt ) + primitive(3);
-//                                break;
-//                            default:
-//                                std::cerr << "[" << __func__ << "]: " << rows << " not implemented" << std::endl;
-//                                return EXIT_FAILURE;
-//                                break;
-//                        }
                         weights[point_id] = pointPrimitiveDistanceFunc( pnt, primitive );
                     }
 

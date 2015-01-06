@@ -60,7 +60,7 @@ namespace smartgeometry
              * @param[in]  output_size           Output cloud size
              * @return EXIT_SUCCESS/EXIT_FAILURE
              */
-            static int
+            static inline int
             expandNormals( pcl::PointCloud<pcl::Normal>::Ptr      &cloud_normals_ptr,
                            pcl::PointIndices::ConstPtr             in_indices_ptr,
                            pcl::PointCloud<pcl::Normal>::ConstPtr  roi_cloud_normals_ptr,
